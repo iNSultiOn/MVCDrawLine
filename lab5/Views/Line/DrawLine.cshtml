@@ -1,0 +1,64 @@
+﻿@model lab5.Models.LineAttributes
+
+<h2>Draw a Line</h2>
+
+<form asp-action="DrawLine" method="post">
+    <div>
+        <label>Thickness: </label>
+        <input asp-for="Thickness" type="number" min="1" value="1" />
+    </div>
+    <div>
+        <label>Color: </label>
+        <input asp-for="Color" type="color" value="#000000" />
+    </div>
+    <div>
+        <label>Start X: </label>
+        <input asp-for="StartX" type="number" value="50" />
+    </div>
+    <div>
+        <label>Start Y: </label>
+        <input asp-for="StartY" type="number" value="50" />
+    </div>
+    <div>
+        <label>End X: </label>
+        <input asp-for="EndX" type="number" value="150" />
+    </div>
+    <div>
+        <label>End Y: </label>
+        <input asp-for="EndY" type="number" value="150" />
+    </div>
+    <button type="submit">Draw Line</button>
+</form>
+
+<canvas id="canvas" width="400" height="400" style="border:1px solid #000;"></canvas>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Перевірка, чи модель передана
+        const model = {
+            thickness: @Model.Thickness,
+            color: '@Model.Color',
+            startX: @Model.StartX,
+            startY: @Model.StartY,
+            endX: @Model.EndX,
+            endY: @Model.EndY
+        };
+
+        if (model.thickness && model.color) {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);  // Очищення Canvas
+
+            // Налаштування лінії
+            ctx.lineWidth = model.thickness;
+            ctx.strokeStyle = model.color;
+
+            // Малюємо лінію
+            ctx.beginPath();
+            ctx.moveTo(model.startX, model.startY);
+            ctx.lineTo(model.endX, model.endY);
+            ctx.stroke();
+        }
+    });
+</script>
